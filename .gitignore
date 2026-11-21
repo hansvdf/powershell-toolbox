@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# Claude Code personal settings
+.claude/settings.local.json
+
+# Logs and output from running scripts locally
+*.log
