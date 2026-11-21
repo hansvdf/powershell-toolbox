@@ -34,7 +34,7 @@ Get-Help .\files\Compare-Folders.ps1 -Full
 
 | Script | Description |
 | --- | --- |
-| [`Compare-Folders.ps1`](files/Compare-Folders.ps1) | Compares the file names in two folders and lists the names found only in Folder A, only in Folder B, or in both. Use `-Recurse` to include subfolders. Compares names only, not file contents. |
+| [`Compare-Folders.ps1`](files/Compare-Folders.ps1) | Compares the file names in two folders and shows a table with, for each file, whether it exists in Folder A and in Folder B. Use `-Recurse` to include subfolders and `-DifferencesOnly` to hide files that exist in both. Compares names only, not file contents. |
 
 ### setup
 
