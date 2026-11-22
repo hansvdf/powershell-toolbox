@@ -139,7 +139,12 @@ function Get-PbiItem {
     return $first   # both failed: the workspace-scoped error is the more meaningful one
 }
 
+$progressActivity = 'Scanning PBIX files'
+$index = 0
 $results = foreach ($file in $files) {
+    $index++
+    Write-Progress -Activity $progressActivity -Status "$index of $($files.Count): $($file.Name)" `
+        -PercentComplete ([int](($index - 1) / $files.Count * 100))
     Write-Verbose "Scanning $($file.FullName)"
     $zip = $null
     $reader = $null
@@ -218,6 +223,7 @@ $results = foreach ($file in $files) {
     }
     [PSCustomObject]$item
 }
+Write-Progress -Activity $progressActivity -Completed
 
 if ($CsvPath) {
     $results | Export-Csv -LiteralPath $CsvPath -NoTypeInformation -Encoding UTF8
