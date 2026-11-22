@@ -1,4 +1,4 @@
-# powershell-toolbox
+# Powershell Toolbox
 
 A collection of small, standalone PowerShell scripts.
 
@@ -72,4 +72,4 @@ The add script collects subfolders when it runs, so run it again after adding a 
 
 ## License
 
-[MIT](LICENSE)
+Powershell Toolbox is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
