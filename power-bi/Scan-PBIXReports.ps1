@@ -12,6 +12,8 @@
     Throttled API calls (HTTP 429) and temporary outages (HTTP 503) are retried automatically,
     honouring the Retry-After header when the service sends one.
 
+    Use -Offline to only read the IDs from the PBIX files, without signing in or calling the API.
+
 .PARAMETER FolderPath
     Folder to scan for PBIX files. Defaults to the current folder.
 
@@ -24,6 +26,10 @@
 .PARAMETER PassThru
     Output the result objects instead of a formatted table, so they can be piped or filtered.
 
+.PARAMETER Offline
+    Skip the Azure CLI sign-in and the Power BI API lookups. The table then shows the
+    workspace, report and semantic model IDs instead of their names.
+
 .EXAMPLE
     .\Scan-PBIXReports.ps1 -FolderPath C:\Reports -Recurse
 
@@ -32,6 +38,9 @@
 
 .EXAMPLE
     .\Scan-PBIXReports.ps1 -FolderPath C:\Reports -PassThru | Where-Object Status -ne 'OK'
+
+.EXAMPLE
+    .\Scan-PBIXReports.ps1 -FolderPath C:\Reports -Offline
 
 .OUTPUTS
     A formatted table by default; PSCustomObject per PBIX file with -PassThru.
@@ -44,7 +53,8 @@ param(
     [string]$FolderPath = ".",
     [switch]$Recurse,
     [string]$CsvPath,
-    [switch]$PassThru
+    [switch]$PassThru,
+    [switch]$Offline
 )
 
 $ErrorActionPreference = 'Stop'
@@ -58,16 +68,19 @@ if ($files.Count -eq 0) {
     return
 }
 
-# Authenticate once, using an existing Azure CLI sign-in.
-if (-not (Get-Command az -ErrorAction SilentlyContinue)) {
-    throw 'Azure CLI (az) not found. Install it, then run az login --allow-no-subscriptions.'
+# Authenticate once, using an existing Azure CLI sign-in (not needed with -Offline).
+$headers = $null
+if (-not $Offline) {
+    if (-not (Get-Command az -ErrorAction SilentlyContinue)) {
+        throw 'Azure CLI (az) not found. Install it and run az login --allow-no-subscriptions, or use -Offline.'
+    }
+    # Discard stderr so az warnings (e.g. upgrade notices) neither abort the script nor end up in the token.
+    $accessToken = & az account get-access-token --resource 'https://analysis.windows.net/powerbi/api' --query accessToken -o tsv 2>$null
+    if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace("$accessToken")) {
+        throw 'Could not obtain a Power BI access token. Run az login --allow-no-subscriptions first, or use -Offline.'
+    }
+    $headers = @{ Authorization = "Bearer $("$accessToken".Trim())" }
 }
-# Discard stderr so az warnings (e.g. upgrade notices) neither abort the script nor end up in the token.
-$accessToken = & az account get-access-token --resource 'https://analysis.windows.net/powerbi/api' --query accessToken -o tsv 2>$null
-if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace("$accessToken")) {
-    throw 'Could not obtain a Power BI access token. Run az login --allow-no-subscriptions first.'
-}
-$headers = @{ Authorization = "Bearer $("$accessToken".Trim())" }
 $apiRoot = 'https://api.powerbi.com/v1.0/myorg'
 $apiCache = @{}
 $maxAttempts = 5
@@ -166,14 +179,16 @@ $results = foreach ($file in $files) {
         }
     }
     catch {
-        $item.Status = "PBIX: $($_.Exception.Message)"
+        # .NET method errors arrive wrapped in a MethodInvocationException; show the real cause.
+        $cause = if ($_.Exception.InnerException) { $_.Exception.InnerException } else { $_.Exception }
+        $item.Status = "PBIX: $($cause.Message)"
     }
     finally {
         if ($null -ne $reader) { $reader.Dispose() }
         if ($null -ne $zip) { $zip.Dispose() }
     }
 
-    if ($item.Status -eq 'OK') {
+    if ($item.Status -eq 'OK' -and -not $Offline) {
         $issues = @()
         if ($item.WorkspaceId) {
             # There is no GET /groups/{id}; filter the workspace list instead.
@@ -210,6 +225,9 @@ if ($CsvPath) {
 }
 if ($PassThru) {
     $results
+}
+elseif ($Offline) {
+    $results | Format-Table File, ConnectionType, WorkspaceId, ReportId, SemanticModelId, Status -AutoSize -Wrap
 }
 else {
     $results | Format-Table File, WorkspaceName, ReportName, SemanticModelName, Status -AutoSize -Wrap
