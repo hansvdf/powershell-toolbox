@@ -40,9 +40,9 @@ Get-Help .\files\Compare-Folders.ps1 -Full
 
 | Script | Description |
 | --- | --- |
-| [`Scan-PBIXReports.ps1`](power-bi/Scan-PBIXReports.ps1) | Shows, for each PBIX file in a folder, which published Power BI workspace, report and semantic model it belongs to, looked up by ID through the Power BI REST API. Use `-Recurse` to include subfolders, `-CsvPath` to export the results and `-PassThru` to output objects instead of a table. |
+| [`Scan-PBIXReports.ps1`](power-bi/Scan-PBIXReports.ps1) | Shows, for each PBIX file in a folder, which published Power BI workspace, report and semantic model it belongs to, looked up by ID through the Power BI REST API. Use `-Recurse` to include subfolders, `-CsvPath` to export the results and `-PassThru` to output objects instead of a table. Use `-Offline` to only show the IDs from the PBIX files, without signing in. |
 
-Requires the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli). Sign in once before running the script:
+Requires the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli), unless you use `-Offline`. Sign in once before running the script:
 
 ```powershell
 az login --allow-no-subscriptions
