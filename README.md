@@ -36,6 +36,22 @@ Get-Help .\files\Compare-Folders.ps1 -Full
 | --- | --- |
 | [`Compare-Folders.ps1`](files/Compare-Folders.ps1) | Compares the file names in two folders and shows a table with, for each file, whether it exists in Folder A and in Folder B. Use `-Recurse` to include subfolders and `-DifferencesOnly` to hide files that exist in both. Compares names only, not file contents. |
 
+### power-bi
+
+| Script | Description |
+| --- | --- |
+| [`Scan-PBIXReports.ps1`](power-bi/Scan-PBIXReports.ps1) | Shows, for each PBIX file in a folder, which published Power BI workspace, report and semantic model it belongs to, looked up by ID through the Power BI REST API. Use `-Recurse` to include subfolders, `-CsvPath` to export the results and `-PassThru` to output objects instead of a table. |
+
+Requires the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli). Sign in once before running the script:
+
+```powershell
+az login --allow-no-subscriptions
+Scan-PBIXReports.ps1 -FolderPath C:\Reports -Recurse
+Scan-PBIXReports.ps1 -FolderPath C:\Reports -PassThru | Where-Object Status -ne 'OK'   # only files with problems
+```
+
+The Status column shows `OK` or what went wrong, for example a file that was never published or a report you don't have access to.
+
 ### setup
 
 | Script | Description |
