@@ -70,7 +70,7 @@ The Status column shows `OK` or what went wrong, for example a file that was nev
 | [`Remove-ScriptFoldersFromPath.ps1`](setup/Remove-ScriptFoldersFromPath.ps1) | Removes a folder and all its subfolders from `PATH` again. Same parameters as the add script. |
 | [`Get-ToolboxScripts.ps1`](setup/Get-ToolboxScripts.ps1) | Lists all scripts in the toolbox with a one-line description, taken from each script's built-in help. |
 
-Both setup scripts only change `PATH` for the current PowerShell session, unless you add `-StorePermanently`. That saves the change for new sessions too: in your user `PATH` on Windows, and in your PowerShell profile on macOS (see [PATH setup on macOS](docs/path-setup-macos.md)). Dot-folders such as `.git` are never added, and neither is `docs`; use `-Exclude` to skip other folders too.
+The add and remove scripts only change `PATH` for the current PowerShell session, unless you add `-StorePermanently`. That saves the change for new sessions too: in your user `PATH` on Windows, and in your PowerShell profile on macOS (see [PATH setup on macOS](docs/path-setup-macos.md)). Dot-folders such as `.git` are never added, and neither is `docs`; use `-Exclude` to skip other folders too.
 
 ```powershell
 .\setup\Add-ScriptFoldersToPath.ps1                          # this repository, current session only
