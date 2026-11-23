@@ -36,6 +36,12 @@ Get-Help .\files\Compare-Folders.ps1 -Full
 | --- | --- |
 | [`Compare-Folders.ps1`](files/Compare-Folders.ps1) | Compares the file names in two folders and shows a table with, for each file, whether it exists in Folder A and in Folder B. Use `-Recurse` to include subfolders and `-DifferencesOnly` to hide files that exist in both. Compares names only, not file contents. |
 
+### network
+
+| Script | Description |
+| --- | --- |
+| [`Get-WifiSsid.ps1`](network/Get-WifiSsid.ps1) | Shows the name (SSID) of the Wi-Fi network you are connected to. Shows a warning when no Wi-Fi network is connected. Windows only. |
+
 ### power-bi
 
 | Script | Description |
