@@ -35,6 +35,7 @@ Get-Help .\files\Compare-Folders.ps1 -Full
 | Script | Description |
 | --- | --- |
 | [`Compare-Folders.ps1`](files/Compare-Folders.ps1) | Compares the file names in two folders and shows a table with, for each file, whether it exists in Folder A and in Folder B. Use `-Recurse` to include subfolders and `-DifferencesOnly` to hide files that exist in both. Compares names only, not file contents. |
+| [`Copy-SubfolderFiles.ps1`](files/Copy-SubfolderFiles.ps1) | Copies the files from all subfolders, at any depth, into one folder. Use `-FolderName` to only take files from folders with a given name (e.g. every `ARCHIVE` folder) and `-Destination` to copy somewhere other than the folder itself. Files with the same name are skipped with a warning instead of overwritten, unless you add `-Overwrite` for files already in the destination. Supports `-WhatIf`. |
 
 ### network
 
