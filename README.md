@@ -12,9 +12,11 @@ cd powershell-toolbox
 .\setup\Add-ScriptFoldersToPath.ps1 -StorePermanently
 ```
 
-The scripts are then available in this and every new terminal, e.g. `Compare-Folders.ps1 -FolderA .\old -FolderB .\new`.
+The scripts are then available in this and every new PowerShell session, e.g. `Compare-Folders.ps1 -FolderA .\old -FolderB .\new`.
 
 Leave out `-StorePermanently` to try the scripts in the current PowerShell session only.
+
+**On macOS**, install PowerShell first (`brew install powershell`), start it with `pwsh` and run the same command with forward slashes: `./setup/Add-ScriptFoldersToPath.ps1 -StorePermanently`. The scripts then work by name inside PowerShell, not in zsh. See [PATH setup on macOS](docs/path-setup-macos.md) for how this works and how to run the scripts from zsh as well.
 
 If PowerShell refuses to run scripts, allow local scripts for your user first:
 
@@ -68,12 +70,12 @@ The Status column shows `OK` or what went wrong, for example a file that was nev
 | [`Remove-ScriptFoldersFromPath.ps1`](setup/Remove-ScriptFoldersFromPath.ps1) | Removes a folder and all its subfolders from `PATH` again. Same parameters as the add script. |
 | [`Get-ToolboxScripts.ps1`](setup/Get-ToolboxScripts.ps1) | Lists all scripts in the toolbox with a one-line description, taken from each script's built-in help. |
 
-Both setup scripts only change `PATH` for the current PowerShell session, unless you add `-StorePermanently` to also update your user `PATH`. Dot-folders such as `.git` are never added.
+The add and remove scripts only change `PATH` for the current PowerShell session, unless you add `-StorePermanently`. That saves the change for new sessions too: in your user `PATH` on Windows, and in your PowerShell profile on macOS (see [PATH setup on macOS](docs/path-setup-macos.md)). Dot-folders such as `.git` are never added, and neither is `docs`; use `-Exclude` to skip other folders too.
 
 ```powershell
 .\setup\Add-ScriptFoldersToPath.ps1                          # this repository, current session only
 .\setup\Add-ScriptFoldersToPath.ps1 -Path 'C:\Scripts'       # another folder
-.\setup\Add-ScriptFoldersToPath.ps1 -StorePermanently        # also save to the user PATH
+.\setup\Add-ScriptFoldersToPath.ps1 -StorePermanently        # also save for new sessions
 .\setup\Remove-ScriptFoldersFromPath.ps1 -StorePermanently   # undo
 ```
 
