@@ -59,9 +59,11 @@ old.dll     Yes     No
 Shows only the files that exist in one of the two folders.
 
 .EXAMPLE
-PS> .\Compare-Folders.ps1 -FolderA .\old -FolderB .\new | Export-Csv .\comparison.csv -NoTypeInformation
+PS> .\Compare-Folders.ps1 -FolderA .\old -FolderB .\new | Export-Csv .\comparison.csv
 
-Saves the comparison to a CSV file, e.g. to open in Excel.
+Saves the comparison to a CSV file, e.g. to open in Excel. In Windows
+PowerShell 5.1, add -NoTypeInformation to leave out the '#TYPE' line that
+Export-Csv otherwise writes at the top of the file.
 #>
 
 param(
