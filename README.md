@@ -36,6 +36,7 @@ Get-Help .\files\Compare-Folders.ps1 -Full
 | --- | --- |
 | [`Compare-Folders.ps1`](files/Compare-Folders.ps1) | Compares the file names in two folders and shows a table with, for each file, whether it exists in Folder A and in Folder B. Use `-Recurse` to include subfolders and `-DifferencesOnly` to hide files that exist in both. Compares names only, not file contents. |
 | [`Copy-SubfolderFiles.ps1`](files/Copy-SubfolderFiles.ps1) | Copies the files from all subfolders, at any depth, into one folder. Use `-FolderName` to only take files from folders with a given name (e.g. every `ARCHIVE` folder) and `-Destination` to copy somewhere other than the folder itself. Files with the same name are skipped with a warning instead of overwritten, unless you add `-Overwrite` for files already in the destination. Supports `-WhatIf`. |
+| [`Merge-CsvFiles.ps1`](files/Merge-CsvFiles.ps1) | Merges all CSV files in a folder into one `merged.csv`, with the source file name as an extra first column on every row. Uses `;` as the delimiter by default; use `-Delimiter ','` for comma-separated files and `-HasHeader` when the files start with a header row. Reads UTF-8, UTF-16 and ANSI files and writes UTF-8 that Excel opens correctly. |
 
 ### network
 
