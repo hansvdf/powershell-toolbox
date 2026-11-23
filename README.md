@@ -66,6 +66,7 @@ The Status column shows `OK` or what went wrong, for example a file that was nev
 | --- | --- |
 | [`Add-ScriptFoldersToPath.ps1`](setup/Add-ScriptFoldersToPath.ps1) | Adds a folder and all its subfolders to `PATH`. Defaults to this repository; use `-Path` for another folder. |
 | [`Remove-ScriptFoldersFromPath.ps1`](setup/Remove-ScriptFoldersFromPath.ps1) | Removes a folder and all its subfolders from `PATH` again. Same parameters as the add script. |
+| [`Get-ToolboxScripts.ps1`](setup/Get-ToolboxScripts.ps1) | Lists all scripts in the toolbox with a one-line description, taken from each script's built-in help. |
 
 Both setup scripts only change `PATH` for the current PowerShell session, unless you add `-StorePermanently` to also update your user `PATH`. Dot-folders such as `.git` are never added.
 
